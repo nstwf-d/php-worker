@@ -63,11 +63,12 @@ RUN apk del $PHPIZE_DEPS
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
   && chmod +x /usr/local/bin/composer
 
+# install supervisor
 RUN mkdir /var/log/supervisor \
     && chmod 777 /var/log/supervisor \
     && mkdir -p /etc/supervisor/conf.d
 
-COPY php-worker/conf/supervisor/supervisord.conf /etc/supervisord.conf
+COPY config/supervisor/supervisord.conf /etc/supervisord.conf
 
 # create user
 RUN addgroup -g ${GROUP_ID} -S ${USER} \
