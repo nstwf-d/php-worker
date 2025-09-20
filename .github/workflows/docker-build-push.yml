@@ -1,0 +1,43 @@
+name: Build and Push Using Shared Workflow
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-push:
+    if: github.event_name != 'pull_request'
+
+    strategy:
+      matrix:
+        include:
+          - version: '8.0'
+            env: dev
+          - version: '8.1'
+            env: dev
+          - version: '8.2'
+            env: dev
+          - version: '8.3'
+            env: dev
+          - version: '8.4'
+            env: dev
+          - version: '8.0'
+          - version: '8.1'
+          - version: '8.2'
+          - version: '8.3'
+          - version: '8.4'
+
+    uses: nstwf-d/docker-ci/.github/workflows/docker-build-push.yaml@main
+    secrets: inherit
+    with:
+      image_version: ${{ matrix.env }}${{ matrix.version }}
+      dockerhub_image: nstwf/${{ github.event.repository.name }}
+      docker_extra_build_args: |
+        PHP_VERSION=${{ matrix.version }}
+        BUILD_ENV=${{ matrix.env }}
+      ghcr_image: ghcr.io/${{ github.repository }}
