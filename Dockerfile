@@ -68,7 +68,7 @@ RUN mkdir /var/log/supervisor \
     && chmod 777 /var/log/supervisor \
     && mkdir -p /etc/supervisor/conf.d
 
-COPY config/supervisor/supervisord.conf /etc/supervisord.conf
+COPY config/supervisord.conf /etc/supervisord.conf
 
 # create user
 RUN addgroup -g ${GROUP_ID} -S ${USER} \
