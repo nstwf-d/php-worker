@@ -25,7 +25,8 @@ RUN apk add --no-cache \
     libxslt-dev \
     bzip2-dev \
     zlib-dev \
-    curl
+    curl \
+    supervisor
 
 # install 'install-php-extensions' script
 RUN curl -sSLf https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions \
