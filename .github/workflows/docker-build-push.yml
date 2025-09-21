@@ -35,7 +35,7 @@ jobs:
     uses: nstwf-d/docker-ci/.github/workflows/docker-build-push.yaml@main
     secrets: inherit
     with:
-      image_version: ${{ matrix.env }}${{ matrix.version }}
+      image_version: ${{ matrix.version }}${{ matrix.env && format('-{0}', matrix.env) || '' }}
       dockerhub_image: nstwf/${{ github.event.repository.name }}
       docker_extra_build_args: |
         PHP_VERSION=${{ matrix.version }}
