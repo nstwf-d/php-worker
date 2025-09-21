@@ -63,6 +63,12 @@ RUN apk del $PHPIZE_DEPS
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
   && chmod +x /usr/local/bin/composer
 
+# create user
+RUN addgroup -g ${GROUP_ID} -S ${USER} \
+  && adduser -u ${USER_ID} -D -S -G ${USER} ${USER} \
+  && mkdir ${APP_PATH}  \
+  && chown -R ${USER}:${USER} ${APP_PATH}
+
 # install supervisor
 RUN mkdir /var/log/supervisor \
     && chmod 777 /var/log/supervisor \
@@ -70,10 +76,7 @@ RUN mkdir /var/log/supervisor \
 
 COPY config/supervisord.conf /etc/supervisord.conf
 
-# create user
-RUN addgroup -g ${GROUP_ID} -S ${USER} \
-  && adduser -u ${USER_ID} -D -S -G ${USER} ${USER} \
-  && mkdir ${APP_PATH}  \
-  && chown -R ${USER}:${USER} ${APP_PATH}
+COPY entrypoint.sh /usr/local/bin/docker-php-entrypoint
+RUN chmod +x /usr/local/bin/docker-php-entrypoint
 
 WORKDIR ${APP_PATH}
